@@ -1,0 +1,59 @@
+========================================================================
+INTELLIGENT COURIER PLANNING SYSTEM - EXECUTION TRACE
+========================================================================
+
+[PHASE 1] Loaded 8 parcels | Depot: Hub_Central | Vehicle Capacity: 15 kg
+Graph Nodes (7): Hub_Central, Sector_46, Sohna_Road, MG_Road, Golf_Course_Rd, Cyber_Hub, Udyog_Vihar
+
+[PHASE 2A] Parcels Sorted by Deadline (Asc) & Priority Value (Desc) via Merge Sort:
+  - Parcel(P07, dest=Golf_Course_Rd, wt=4kg, val=50, dl=1h)
+  - Parcel(P03, dest=Sohna_Road, wt=3kg, val=35, dl=1h)
+  - Parcel(P01, dest=Sector_46, wt=4kg, val=45, dl=2h)
+  - Parcel(P05, dest=MG_Road, wt=2kg, val=25, dl=2h)
+  - Parcel(P04, dest=Cyber_Hub, wt=5kg, val=55, dl=3h)
+  - Parcel(P08, dest=Sohna_Road, wt=5kg, val=40, dl=3h)
+  - Parcel(P02, dest=Udyog_Vihar, wt=6kg, val=60, dl=4h)
+  - Parcel(P06, dest=Sector_46, wt=7kg, val=70, dl=5h)
+
+[PHASE 2B] 0/1 Knapsack DP Optimal Packing Plan (Capacity = 15 kg):
+  - Total Priority Value Achieved : 175
+  - Total Weight Loaded           : 15 / 15 kg
+  - Selected Parcels:
+      * P07 -> Golf_Course_Rd (Weight: 4 kg, Value: 50, Deadline: 1h)
+      * P01 -> Sector_46 (Weight: 4 kg, Value: 45, Deadline: 2h)
+      * P05 -> MG_Road (Weight: 2 kg, Value: 25, Deadline: 2h)
+      * P04 -> Cyber_Hub (Weight: 5 kg, Value: 55, Deadline: 3h)
+
+  - DP Table Snapshot (Rows: Items 0..8, Cols: Capacity 0..15):
+    Item\Cap |   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15
+    --------------------------------------------------------------------------
+    Init(0)  |   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
+    P07      |   0   0   0   0  50  50  50  50  50  50  50  50  50  50  50  50
+    P03      |   0   0   0  35  50  50  50  85  85  85  85  85  85  85  85  85
+    P01      |   0   0   0  35  50  50  50  85  95  95  95 130 130 130 130 130
+    P05      |   0   0  25  35  50  60  75  85  95 110 120 130 130 155 155 155
+    P04      |   0   0  25  35  50  60  75  85  95 110 120 130 140 155 165 175
+    P08      |   0   0  25  35  50  60  75  85  95 110 120 130 140 155 165 175
+    P02      |   0   0  25  35  50  60  75  85  95 110 120 130 140 155 165 175
+    P06      |   0   0  25  35  50  60  75  85  95 110 120 130 140 155 165 175
+
+[PHASE 3] Route Optimization (Dijkstra Shortest Paths + Nearest-Neighbor TSP):
+  - Delivery Stop Sequence : Hub_Central -> Sector_46 -> Golf_Course_Rd -> Cyber_Hub -> MG_Road -> Hub_Central
+  - Total Route Distance   : 21.6 km
+  - Detailed Road Legs (via Dijkstra):
+      * Hub_Central -> Sector_46 (4.5 km) | Road Path: Hub_Central -> Sector_46
+      * Sector_46 -> Golf_Course_Rd (4.1 km) | Road Path: Sector_46 -> Golf_Course_Rd
+      * Golf_Course_Rd -> Cyber_Hub (4.8 km) | Road Path: Golf_Course_Rd -> Cyber_Hub
+      * Cyber_Hub -> MG_Road (3.0 km) | Road Path: Cyber_Hub -> MG_Road
+      * MG_Road -> Hub_Central (5.2 km) | Road Path: MG_Road -> Hub_Central
+
+[PHASE 4] Runtime Scalability Benchmark (in milliseconds):
+  Input (n)    | Merge Sort (ms)  | 0/1 Knapsack DP (ms)  | Dijkstra + TSP (ms) 
+  ----------------------------------------------------------------------------
+  50           | 0.0867           | 0.6934                | 0.2007              
+  150          | 0.3069           | 1.8705                | 0.3329              
+  300          | 0.6394           | 4.4255                | 1.4414              
+  600          | 1.6198           | 18.1931               | 2.2894              
+  1000         | 11.0668          | 33.0969               | 1.4337              
+
+  [Saved runtime chart to: C:\Users\HP\Downloads\Courier_Planning_Capstone\Courier_Planning_Capstone\outputs\runtime_performance.png]

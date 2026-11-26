@@ -1,0 +1,9 @@
+parcel_id,destination,weight,priority_value,deadline_hr
+P01,Sector_46,4,45,2
+P02,Udyog_Vihar,6,60,4
+P03,Sohna_Road,3,35,1
+P04,Cyber_Hub,5,55,3
+P05,MG_Road,2,25,2
+P06,Sector_46,7,70,5
+P07,Golf_Course_Rd,4,50,1
+P08,Sohna_Road,5,40,3
